@@ -1,17 +1,36 @@
-import {Client, Intents} from "discord.js";
+import {Awaitable, Client, Intents, Message, PartialMessage} from "discord.js";
 
 export class Bot {
 
-    static default: Bot;
+    static default: Bot = new Bot();
     client: Client
 
-    constructor() {
-        this.client = new Client({intents: [Intents.FLAGS.GUILDS]});
+    private constructor() {
+        this.client = new Client({intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES]});
     }
 
-    async login() {
-        await this.client.login(process.env.DISCORD_TOKEN);
+
+    static setOnMessageCreate(func: (
+        message: Message
+    ) => Awaitable<void>) {
+        this.default.client.on("messageCreate", func);
+    }
+
+    static setOnMessageDelete(func: (
+        message: Message | PartialMessage
+    ) => Awaitable<void>) {
+        this.default.client.on("messageDelete", func);
+    }
+
+    static setOnMessageUpdate(func: (
+        oldMessage: Message | PartialMessage,
+        newMessage: Message | PartialMessage
+    ) => Awaitable<void>) {
+        this.default.client.on("messageUpdate", func);
+    }
+
+    static async login() {
+        await this.default.client.login(process.env.DISCORD_TOKEN);
     }
 
 }
-Bot.default = new Bot();

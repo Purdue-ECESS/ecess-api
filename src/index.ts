@@ -1,17 +1,17 @@
-import express, {Request, Response} from "express";
-import expressWs from "express-ws";
-
-const wsExpress = expressWs(express());
-const app = wsExpress.app;
-const port = process.env.PORT || 3000;
+import {Request, Response} from "express";
 import {Bot} from "./bot";
+import {Message} from "discord.js";
+import {Api} from "./api";
 
-app.use((req: any, res: any, next: any) => {
-    console.log("middleware");
-    return next();
-});
 
-app.get("/", (req: any, res: any) => {
+Api.setUse(
+    (req: any, res: any, next: any) => {
+        console.log("middleware");
+        return next();
+    }
+)
+
+Api.setGetRoute("/", (req: any, res: any) => {
     res.send({
         status: 'development',
         purpose: 'ECE Ambassadors',
@@ -19,7 +19,7 @@ app.get("/", (req: any, res: any) => {
     });
 });
 
-app.get("/google", (req: Request, res: Response) => {
+Api.setGetRoute("/google", (req: Request, res: Response) => {
     const date = req.query.date || "undefined";
     res.send({
         get: date
@@ -27,14 +27,14 @@ app.get("/google", (req: Request, res: Response) => {
 });
 
 
-app.ws('/ws', (ws_param, req: Request) => {
+Api.setWs('/ws', (ws_param: any, req: Request) => {
     ws_param.on("message", (msg: string) => {
         console.log(msg);
     })
 });
 
 
-app.ws('/hello/:world', function(ws, req, next) {
+Api.setWs('/hello/:world', function(ws: any, req: any, next: any) {
 
     let interval: NodeJS.Timer | undefined = undefined;
     let message = "sending data back";
@@ -42,7 +42,7 @@ app.ws('/hello/:world', function(ws, req, next) {
     ws.on('open', function () {
         console.log('open connection');
     })
-    ws.on('message', function(msg: string, b) {
+    ws.on('message', function(msg: string) {
         console.log(msg);
         if (msg === "stream" && interval === undefined) {
             interval = setInterval(() => {
@@ -67,7 +67,13 @@ app.ws('/hello/:world', function(ws, req, next) {
     next();
 });
 
-
-Bot.default.login().then(r => {
-    app.listen(port);
+Bot.setOnMessageCreate(async (message: Message) => {
+    console.log("message", message.content);
 });
+
+
+Api.listen();
+Bot.login().then(() => {
+    console.log("discord bot is running");
+});
+
