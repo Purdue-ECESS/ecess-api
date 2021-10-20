@@ -1,7 +1,8 @@
 import {Request, Response} from "express";
-import {Bot} from "./bot";
+import {Bot} from "./utils/bot";
 import {Message} from "discord.js";
-import {Api} from "./api";
+import {Api} from "./utils/api";
+import {Db} from "./utils/db";
 
 
 Api.setUse(
@@ -76,6 +77,7 @@ Bot.setOnMessageCreate(async (message: Message) => {
 });
 
 
+Db.testing().then();
 Api.listen();
 Bot.login().then(() => {
     console.log("discord bot is running");

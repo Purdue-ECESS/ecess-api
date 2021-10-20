@@ -1,1 +1,1 @@
-# ecea-api-source-code-
+# Api Gateway + Discord Bot for ECE Ambassadors 
