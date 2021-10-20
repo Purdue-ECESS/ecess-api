@@ -4,6 +4,7 @@ import expressWs from "express-ws";
 const wsExpress = expressWs(express());
 const app = wsExpress.app;
 const port = process.env.PORT || 3000;
+import {Bot} from "./bot";
 
 app.use((req: any, res: any, next: any) => {
     console.log("middleware");
@@ -66,4 +67,7 @@ app.ws('/hello/:world', function(ws, req, next) {
     next();
 });
 
-app.listen(port);
+
+Bot.default.login().then(r => {
+    app.listen(port);
+});
