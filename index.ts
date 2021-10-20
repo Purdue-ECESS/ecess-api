@@ -1,4 +1,4 @@
-import express from "express";
+import express, {Request, Response} from "express";
 import expressWs from "express-ws";
 
 const wsExpress = expressWs(express());
@@ -18,12 +18,20 @@ app.get("/", (req: any, res: any) => {
     });
 });
 
+app.get("/google", (req: Request, res: Response) => {
+    const date = req.query.date || "undefined";
+    res.send({
+        get: date
+    });
+});
 
-app.ws('/ws', (ws_param: any, req: any) => {
+
+app.ws('/ws', (ws_param, req: Request) => {
     ws_param.on("message", (msg: string) => {
         console.log(msg);
     })
 });
+
 
 app.ws('/hello/:world', function(ws, req, next) {
 
