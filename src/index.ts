@@ -68,7 +68,11 @@ Api.setWs('/hello/:world', function(ws: any, req: any, next: any) {
 });
 
 Bot.setOnMessageCreate(async (message: Message) => {
+    if (message.author.bot) {
+        return;
+    }
     console.log("message", message.content);
+    message.channel.send("testing deployment");
 });
 
 
