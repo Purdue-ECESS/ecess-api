@@ -72,7 +72,7 @@ Bot.setOnMessageCreate(async (message: Message) => {
         return;
     }
     console.log("message", message.content);
-    message.channel.send("testing deployment");
+    // message.channel.send("testing deployment");
 });
 
 
