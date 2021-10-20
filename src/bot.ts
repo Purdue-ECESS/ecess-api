@@ -30,7 +30,13 @@ export class Bot {
     }
 
     static async login() {
-        await this.default.client.login(process.env.DISCORD_TOKEN);
+        const token = process.env.DISCORD_TOKEN;
+        if (token) {
+            await this.default.client.login();
+        }
+        else {
+            console.log("Discord Token Not Found");
+        }
     }
 
 }
