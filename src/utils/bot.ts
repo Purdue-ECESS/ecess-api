@@ -53,7 +53,7 @@ export class Bot {
                     author: name.displayName,
                     content: m.content,
                     date: m.editedAt || m.createdAt,
-                    isAdvisor: name.displayName in ["Giselle", "Leigh Ann"]
+                    label: name.displayName in ["Giselle", "Leigh Ann"] ? "Advisor": (name.displayName === "Sara Hui" ? "Head Ambassador": "Ambassador")
                 });
             }
         }
