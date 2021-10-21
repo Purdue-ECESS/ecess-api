@@ -52,7 +52,8 @@ export class Bot {
                 response.push({
                     author: name.displayName,
                     content: m.content,
-                    date: m.editedAt || m.createdAt
+                    date: m.editedAt || m.createdAt,
+                    isAdvisor: name.displayName in ["Giselle", "Leigh Ann"]
                 });
             }
         }
