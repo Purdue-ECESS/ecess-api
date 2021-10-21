@@ -49,7 +49,7 @@ export class Bot {
             for (let k of messages) {
                 const m: Message = k[1];
                 const name = await guild.members.fetch(m.author.id);
-                response.push({author: name.displayName, content: m.content});
+                response.push({author: name.displayName, content: m.content, title: "Discord Update from " + name.displayName});
             }
         }
         return response;
