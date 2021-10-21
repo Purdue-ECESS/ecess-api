@@ -7,6 +7,7 @@ import {Db} from "./utils/db";
 
 Api.setUse(
     (req: any, res: any, next: any) => {
+        res.header("Access-Control-Allow-Origin", "*");
         return next();
     }
 )
