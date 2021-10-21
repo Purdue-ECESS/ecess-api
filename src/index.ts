@@ -3,6 +3,7 @@ import {Bot} from "./utils/bot";
 import {Message} from "discord.js";
 import {Api} from "./utils/api";
 import {Db} from "./utils/db";
+import {Calendar} from "./utils/calendar";
 
 
 Api.setUse(
@@ -20,11 +21,10 @@ Api.setGetRoute("/", (req: any, res: any) => {
     });
 });
 
-Api.setGetRoute("/google", (req: Request, res: Response) => {
+Api.setGetRoute("/calendar/ambassador", async (req: Request, res: Response) => {
     const date = req.query.date || "undefined";
-    res.send({
-        get: date
-    });
+    const data = await Calendar.getCalendarEvents();
+    res.send(data);
 });
 
 Api.setGetRoute("/bot/announcements", async (req: Request, res: Response) => {
@@ -82,7 +82,6 @@ Bot.setOnMessageCreate(async (message: Message) => {
 });
 
 
-// Db.testing().then();
 Api.listen();
 Bot.login().then(async () => {
     console.log("discord bot is running");
