@@ -7,7 +7,6 @@ import {Db} from "./utils/db";
 
 Api.setUse(
     (req: any, res: any, next: any) => {
-        console.log("middleware");
         return next();
     }
 )
@@ -25,6 +24,11 @@ Api.setGetRoute("/google", (req: Request, res: Response) => {
     res.send({
         get: date
     });
+});
+
+Api.setGetRoute("/bot/announcements", async (req: Request, res: Response) => {
+    const response = await Bot.getMessageFromChannel();
+    res.send(response);
 });
 
 
@@ -77,9 +81,9 @@ Bot.setOnMessageCreate(async (message: Message) => {
 });
 
 
-Db.testing().then();
+// Db.testing().then();
 Api.listen();
-Bot.login().then(() => {
+Bot.login().then(async () => {
     console.log("discord bot is running");
 });
 
