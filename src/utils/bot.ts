@@ -40,7 +40,7 @@ export class Bot {
         this.default.client.on("messageUpdate", func);
     }
 
-    static async getMessageFromChannel() {
+    static async getAnnouncements() {
         const response = [];
         const channel : Channel | null = await this.default.client.channels.fetch(process.env.DISCORD_ANNOUNCEMENT_CHANNEL || "");
         const guild = await this.default.guild;
@@ -49,7 +49,11 @@ export class Bot {
             for (let k of messages) {
                 const m: Message = k[1];
                 const name = await guild.members.fetch(m.author.id);
-                response.push({author: name.displayName, content: m.content, title: "Discord Update from " + name.displayName});
+                response.push({
+                    author: name.displayName,
+                    content: m.content,
+                    date: m.editedAt || m.createdAt
+                });
             }
         }
         return response;

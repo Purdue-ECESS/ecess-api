@@ -28,7 +28,7 @@ Api.setGetRoute("/google", (req: Request, res: Response) => {
 });
 
 Api.setGetRoute("/bot/announcements", async (req: Request, res: Response) => {
-    const response = await Bot.getMessageFromChannel();
+    const response = await Bot.getAnnouncements();
     res.send(response);
 });
 
