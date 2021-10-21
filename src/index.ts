@@ -2,7 +2,6 @@ import {Request, Response} from "express";
 import {Bot} from "./utils/bot";
 import {Message} from "discord.js";
 import {Api} from "./utils/api";
-import {Db} from "./utils/db";
 import {Calendar} from "./utils/calendar";
 
 
