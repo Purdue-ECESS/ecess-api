@@ -3,6 +3,7 @@ import {Bot} from "./utils/bot";
 import {Message} from "discord.js";
 import {Api} from "./utils/api";
 import {Calendar} from "./utils/calendar";
+import * as stream from "stream";
 
 
 Api.setUse(
@@ -20,10 +21,22 @@ Api.setGetRoute("/", (req: any, res: any) => {
     });
 });
 
-Api.setGetRoute("/calendar/ambassador", async (req: Request, res: Response) => {
-    const date = req.query.date || "undefined";
-    const data = await Calendar.getCalendarEvents();
-    res.send(data);
+Api.setGetRoute("/calendar/:org/:cal", async (req: Request, res: Response) => {
+    const day = req.query.day;
+    const org = req.params.org;
+    const cal = req.params.cal;
+    let error = true;
+    if (org === "ambassadors") {
+        if (typeof day === "string" || day == undefined) {
+            res.send(await Calendar.getCalendarEvents(day));
+            error = false;
+        }
+    }
+
+    if (error) {
+        res.send({error: "calendar is not found"})
+        res.statusCode = 400;
+    }
 });
 
 Api.setGetRoute("/bot/announcements", async (req: Request, res: Response) => {
