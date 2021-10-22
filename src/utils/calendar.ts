@@ -42,6 +42,7 @@ export class Calendar {
                     title: c.summary,
                     start: c.start,
                     end: c.end,
+                    id: c.id
                 })
             }
         }
