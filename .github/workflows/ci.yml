@@ -24,4 +24,3 @@ jobs:
                                         npm run build
                                         cd ../
                                         pm2 restart ecea-api-source-code
-					
