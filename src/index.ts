@@ -26,12 +26,13 @@ Api.setGetRoute("/", (req: any, res: any) => {
 });
 
 Api.setGetRoute("/bucket", async (req: any, res: any) => {
-    // const storage = MyFbStorage.loadStorage();
+    const storage = MyFbStorage.loadStorage();
     const image = req.query.image;
     if (typeof image === "string") {
-        // const link = await storage.getFileLink(image) ;
+        const link = await storage.getFileLink(image) ;
         res.send({
-            image: `https://ecess-api.matthewwen.com/blob?path=${image}`
+            // image: `https://ecess-api.matthewwen.com/blob?path=${image}`
+            image: link
         })
     }
     else {
