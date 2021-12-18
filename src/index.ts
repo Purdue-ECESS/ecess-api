@@ -2,10 +2,10 @@ import {Request, Response} from "express";
 import {Bot} from "./utils/bot";
 import {Message} from "discord.js";
 import {Api} from "./utils/api";
-import {Calendar} from "./utils/calendar";
+import {Calendar} from "./google/calendar";
 import * as stream from "stream";
 import moment from "moment/moment";
-import {MyFbStorage} from "./myFb/myFbStorage";
+import {MyFbStorage} from "./google/myFb/myFbStorage";
 import fs from "fs";
 
 
