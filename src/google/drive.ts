@@ -1,15 +1,21 @@
-import {MyFirebase} from "./myFb/myFb";
 import {GoogleApi} from "./googleApi";
 import {google} from "googleapis";
-import {file} from "googleapis/build/src/apis/file";
 import fs from "fs";
 import * as fsE from 'fs-extra';
 import {dirname, join} from "path";
 import {tmpdir} from "os";
-import sharp from "sharp";
 import {MyFbStorage} from "./myFb/myFbStorage";
 
-const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+const SCOPES = [
+    'https://www.googleapis.com/auth/drive.metadata.readonly',
+    'https://www.googleapis.com/auth/drive',
+    'https://www.googleapis.com/auth/drive.appdata',
+    'https://www.googleapis.com/auth/drive.file',
+    'https://www.googleapis.com/auth/drive.metadata',
+    'https://www.googleapis.com/auth/drive.metadata.readonly',
+    'https://www.googleapis.com/auth/drive.photos.readonly',
+    'https://www.googleapis.com/auth/drive.readonly',
+];
 
 export class Drive extends GoogleApi {
 
@@ -60,14 +66,14 @@ export class Drive extends GoogleApi {
         );
     }
 
+    // https://github.com/googleapis/google-api-nodejs-client/blob/main/samples/drive/download.js
     async downloadFile(driveObj: { name?: any; id?: any }, tmpFilePath: any) {
         return new Promise((resolve, reject) => {
             this.api.files
                 .get({fileId: driveObj.id, alt: 'media'}, {responseType: 'stream'})
                 .then((res: any) => {
                     let dest = fs.createWriteStream(tmpFilePath);
-                    res.data
-                        .on('end', () => {
+                    res.data.on('end', () => {
                             resolve(tmpFilePath);
                         })
                         .on('error', (err: any) => {

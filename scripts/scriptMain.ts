@@ -1,7 +1,6 @@
 import {Calendar} from "../src/google/calendar";
 import {Drive} from "../src/google/drive";
 import {MyFbStorage} from "../src/google/myFb/myFbStorage";
-import {Api} from "../src/utils/api";
 
 async function calendarMain() {
     const calendar = await Calendar.getCalendarEvents();
@@ -21,11 +20,10 @@ async function storageDrive() {
     const drive = Drive.loadDrive();
     const response = await drive.listFiles();
     console.log(response[0]);
-    // await drive.resizeImgObj(response[0]);
+    await drive.resizeImgObj(response[0]);
 }
 
 // My hack to keep the process alive:
-Api.listen();
 storageDrive().then(() => {
     console.log("Main")
 });

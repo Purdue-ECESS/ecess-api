@@ -74,6 +74,12 @@ export class MyFbStorage extends MyFirebase{
                 destination: join(bucketDir, thumbName)
             });
         });
+        uploadPromises.push(new Promise(resolve => {
+            resolve(this.bucket.upload(tmpFilePath, {
+                destination: join(bucketDir, fileName)
+            }))
+        }));
+        console.log({uploadPromises});
 
         // 4. Run the upload operations
         await Promise.all(uploadPromises);
