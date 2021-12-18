@@ -19,7 +19,7 @@ Api.setUse(
 
 Api.setGetRoute("/", (req: any, res: any) => {
     res.send({
-        status: 'development',
+        status: process.env.ENV || 'development',
         purpose: 'ECE Student Society',
         owner: 'Purdue ECE'
     });

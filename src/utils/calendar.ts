@@ -1,19 +1,20 @@
 import {google} from "googleapis";
 import moment, {Moment} from "moment";
+import {MyFirebase} from "../myFb/myFb";
 
 const SCOPE = ["https://www.googleapis.com/auth/calendar.readonly",]
 
-export class Calendar {
+export class Calendar extends MyFirebase {
     static default: Calendar = new Calendar();
     private api: any;
     private readonly calendarId: string;
 
     private constructor() {
-        const key = JSON.parse(process.env.FIREBASE_CREDENTIALS || "{}");
+        super();
         const auth = new google.auth.JWT(
-            key.client_email,
+            MyFirebase.appDefault.clientEmail,
             undefined,
-            key.private_key,
+            MyFirebase.appDefault.privateKey,
             SCOPE,
         )
         this.api = google.calendar({version: "v3", auth: auth});
