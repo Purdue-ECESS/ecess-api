@@ -90,12 +90,39 @@ export class Bot {
             console.log(-1 != ["Giselle"].indexOf(name.displayName));
             response.push({
                 author: name.displayName,
-                content: m.content,
+                content: Bot.HTMLParser(m.content),
                 date: m.editedAt || m.createdAt,
                 label: -1 != ["Giselle", "Leigh Ann"].indexOf(name.displayName) ? "Advisor": (name.displayName === "Sara Hui" ? "Head Ambassador": "Ambassador")
             });
         }
         return response;
+    }
+
+    static HTMLParser(message: String): string {
+        let words = message.split(' ');
+        let new_message = "";
+        let new_word;
+
+        for (let word of words) {
+            //test case 1: link -> <a href =*link*>*link*</a> PASSES
+            if (word.startsWith('https://')) {
+                new_word = "<a href=" + word + ">" + word + "</a>"
+                new_message += new_word
+            }
+            //TODO test case 2 (bold)
+            else if (word.includes("\n")) {
+                //test case 3: \n -> <br> PASSES
+                new_word = word.split("\n").join("<br>") // find replaceAll function?
+                new_message += new_word
+            }
+            else {
+                new_message += word
+            }
+            //TODO test case 4 (@)
+            //TODO test case 5 (images)
+            new_message += " "
+        }
+        return new_message.trim()
     }
 
     static async login() {
