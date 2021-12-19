@@ -5,6 +5,7 @@ import * as fsE from 'fs-extra';
 import {dirname, join} from "path";
 import {tmpdir} from "os";
 import {MyFbStorage} from "./myFb/myFbStorage";
+import {file} from "googleapis/build/src/apis/file";
 
 const SCOPES = [
     'https://www.googleapis.com/auth/drive.metadata.readonly',
@@ -48,12 +49,17 @@ export class Drive extends GoogleApi {
     }
 
     async resizeImgObj(driveObj: { name?: any; id?: any; }) {
+        const storage = MyFbStorage.loadStorage();
+        const fileExists = await storage.fileExists(driveObj.name);
+        if (!driveObj.name?.startsWith("img/") || fileExists) {
+            return new Promise(resolve => resolve(null));
+        }
         const filePath = driveObj.name;
         const fileName = filePath.split('/').pop();
         const bucketDir = dirname(filePath);
 
         const workingDir = join(tmpdir(), 'thumbs');
-        const tmpFilePath = join(workingDir, 'source.png');
+        const tmpFilePath = join(workingDir, fileName);
 
         // 1. Ensure thumbnail dir exists
         await fsE.ensureDir(workingDir);

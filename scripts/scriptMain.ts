@@ -18,9 +18,14 @@ async function storageMain() {
 
 async function storageDrive() {
     const drive = Drive.loadDrive();
+    console.log("Getting Files from Drive");
     const response = await drive.listFiles();
-    console.log(response[0]);
-    await drive.resizeImgObj(response[0]);
+    console.log("Finish Getting Files from Drive")
+    for (let i = 0; i < response.length; i++) {
+        console.log(i);
+        await drive.resizeImgObj(response[i]);
+    }
+    console.log("done")
 }
 
 // My hack to keep the process alive:

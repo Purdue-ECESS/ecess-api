@@ -8,6 +8,7 @@ import { tmpdir } from 'os';
 import { join, dirname } from 'path';
 import sharp from 'sharp';
 import * as fs from 'fs-extra';
+import {file} from "googleapis/build/src/apis/file";
 
 export class MyFbStorage extends MyFirebase{
 
@@ -34,10 +35,9 @@ export class MyFbStorage extends MyFirebase{
         const bucketDir = dirname(filePath);
 
         const workingDir = join(tmpdir(), 'thumbs');
-        const tmpFilePath = join(workingDir, 'source.png');
+        const tmpFilePath = join(workingDir, fileName);
 
         if (fileName.includes('thumb@')) {
-            console.log('exiting function');
             return false;
         }
 
@@ -62,24 +62,29 @@ export class MyFbStorage extends MyFirebase{
 
         const uploadPromises = sizes.map(async size => {
             const thumbName = `thumb@${size}_${fileName}`;
-            const thumbPath = join(workingDir, thumbName);
+            let thumbPath = join(workingDir, thumbName);
 
             // Resize source image
-            await sharp(tmpFilePath)
-                .resize(size, size)
-                .toFile(thumbPath);
+            try {
+                await sharp(tmpFilePath)
+                    .resize(size, size)
+                    .toFile(thumbPath);
 
-            // Upload to GCS
-            return this.bucket.upload(thumbPath, {
-                destination: join(bucketDir, thumbName)
-            });
+                // Upload to GCS
+                return this.bucket.upload(thumbPath, {
+                    destination: join(bucketDir, thumbName)
+                });
+            }
+            catch (e) {
+                console.log({fileName, e});
+            }
+
         });
         uploadPromises.push(new Promise(resolve => {
             resolve(this.bucket.upload(tmpFilePath, {
                 destination: join(bucketDir, fileName)
             }))
         }));
-        console.log({uploadPromises});
 
         // 4. Run the upload operations
         await Promise.all(uploadPromises);
@@ -88,6 +93,10 @@ export class MyFbStorage extends MyFirebase{
         return fs.remove(workingDir);
     }
 
+    public async fileExists(path: string) {
+        const [exists] = await this.bucket.file(path).exists();
+        return exists;
+    }
 
 
     public static loadStorage() {
