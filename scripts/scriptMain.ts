@@ -18,17 +18,20 @@ async function storageMain() {
 
 async function storageDrive() {
     const drive = Drive.loadDrive();
-    console.log("Getting Files from Drive");
     const response = await drive.listFiles();
-    console.log("Finish Getting Files from Drive")
     for (let i = 0; i < response.length; i++) {
-        console.log(i);
         await drive.resizeImgObj(response[i]);
     }
-    console.log("done")
+}
+
+async function listImages() {
+    const path: string = "events/12-11-2021-spark/";
+    const storage: MyFbStorage = MyFbStorage.loadStorage();
+    const response = await storage.listImgByPath(path);
+    console.log(response);
 }
 
 // My hack to keep the process alive:
-storageDrive().then(() => {
+listImages().then(() => {
     console.log("Main")
 });

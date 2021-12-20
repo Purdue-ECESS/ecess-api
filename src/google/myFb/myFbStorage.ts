@@ -29,6 +29,11 @@ export class MyFbStorage extends MyFirebase{
         return files;
     }
 
+    async listImgByPath(path: string) {
+        const response = await this.listDir(`img/${path}`);
+        console.log(response);
+    }
+
     async resizeImgObjFromFb(object: any) {
         const filePath = object.name;
         const fileName = filePath.split('/').pop();

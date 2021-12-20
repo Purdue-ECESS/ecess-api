@@ -48,6 +48,16 @@ export class Drive extends GoogleApi {
         });
     }
 
+    listAllFiles() : Promise<any[]> {
+        return new Promise(resolve => {
+            this.api.files.list({
+                q: `mimeType ='image/jpeg'`
+            }, (err: any, res: any) => {
+                resolve(res.data.files);
+            });
+        });
+    }
+
     async resizeImgObj(driveObj: { name?: any; id?: any; }) {
         const storage = MyFbStorage.loadStorage();
         const fileExists = await storage.fileExists(driveObj.name);
