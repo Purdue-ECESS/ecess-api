@@ -72,10 +72,10 @@ export class Bot {
             return [];
         }
         const response = [];
-        if (!process.env.DISCORD_ANNOUNCEMENT_CHANNEL) {
+        if (!process.env.AMBASSADOR_ANNOUNCEMENT_CHANNEL) {
             return [];
         }
-        const channel : Channel | null = await Bot.client.channels.fetch(process.env.DISCORD_ANNOUNCEMENT_CHANNEL || "");
+        const channel : Channel | null = await Bot.client.channels.fetch(process.env.AMBASSADOR_ANNOUNCEMENT_CHANNEL || "");
         if (!this.guild) {
             return [];
         }

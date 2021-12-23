@@ -32,13 +32,22 @@ export class Drive extends GoogleApi {
         return Drive.default;
     }
 
+    async uploadDriveToFb() {
+        const drive = Drive.loadDrive();
+        const response = await drive.listFiles();
+        for (let i = 0; i < response.length; i++) {
+            await drive.resizeImgObj(response[i]);
+        }
+    }
+
     listFilesInDir(folderId: string | undefined) : Promise<any[]>{
         return new Promise(resolve => {
             if (folderId == undefined) {
                 resolve([]);
             }
             this.api.files.list({
-                q: `parents = '${folderId}'`
+                q: `parents = '${folderId}'`,
+                pageSize: 1000
             }, (err: any, res: any) => {
                 if (err) {
                     resolve([]);

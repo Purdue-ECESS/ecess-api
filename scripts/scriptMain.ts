@@ -25,9 +25,8 @@ async function storageDrive() {
 }
 
 async function listImages() {
-    const path: string = "events/12-11-2021-spark/";
-    const storage: MyFbStorage = MyFbStorage.loadStorage();
-    const response = await storage.listImgByPath(path);
+    const path: string = "events/12-11-2021-spark";
+    const response = await MyFbStorage.loadStorage().listImgLinksByPath(path, 480, 100);
     console.log(response);
 }
 
