@@ -56,12 +56,3 @@ jobs:
         with:
           workload_identity_provider: 'projects/284911242659/locations/global/workloadIdentityPools/gh-to-vm/providers/gh-provider'
           service_account: ' gh-actions-to-vm@mwenclubhouse.iam.gserviceaccount.com'
-
-      - id: 'deploy'
-        uses: 'google-github-actions/deploy-cloudrun@v0'
-        with:
-          service: 'ecess-prod'
-          image: 'ghcr.io/purdue-ecess/ecess-api:ecess'
-
-      - name: 'Use output'
-        run: 'curl "${{ steps.deploy.outputs.url }}"'
