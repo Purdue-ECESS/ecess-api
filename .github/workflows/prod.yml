@@ -7,7 +7,7 @@ name: Create and publish a Docker image
 
 on:
   push:
-    branches: ['ecess']
+    branches: ['prod']
 
 env:
   REGISTRY: ghcr.io
@@ -22,30 +22,6 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Log in to the Container registry
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-
-      - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        with:
-          context: .
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-
       - name: Auth with GCP with WIP
         uses: 'google-github-actions/auth@v0'
         with:
@@ -56,4 +32,17 @@ jobs:
         uses: 'google-github-actions/setup-gcloud@v0'
 
       - name: 'Use gcloud CLI'
-        run: 'gcloud info'
+        run:
+          'gcloud info'
+          'gcloud compute ssh mwenclubhouse --zone us-central1-a --command "
+            sudo bash &&
+            docker system prune -f -a &&
+            docker pull ghcr.io/purdue-ecess/ecess-api:ecess &&
+            docker stop ecess &&
+            docker container rm ecess &&
+            docker run -d --env-file environments/ecess-prod.env.list \
+              -v /home/mwenclubhouse/ecess:/usr/src/app/bucket \
+              -l ecess \
+              -p 3000:3000 \
+              ghcr.io/purdue-ecess/ecess-api:ecess
+          "'
