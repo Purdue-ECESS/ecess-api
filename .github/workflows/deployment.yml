@@ -45,14 +45,14 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  clean-and-update-container:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-    steps:
-      - id: 'auth'
+      - name: Auth with GCP with WIP
         uses: 'google-github-actions/auth@v0'
         with:
           workload_identity_provider: 'projects/284911242659/locations/global/workloadIdentityPools/gh-to-vm/providers/gh-provider'
           service_account: ' gh-actions-to-vm@mwenclubhouse.iam.gserviceaccount.com'
+
+      - name: 'Set up Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
+
+      - name: 'Use gcloud CLI'
+        run: 'gcloud info'
