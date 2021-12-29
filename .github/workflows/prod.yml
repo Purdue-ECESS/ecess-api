@@ -7,7 +7,7 @@ name: Create and publish a Docker image
 
 on:
   push:
-    branches: ['prod']
+    branches: ['prod', 'matthewwen-patch-1']
 
 env:
   REGISTRY: ghcr.io
