@@ -27,7 +27,6 @@ jobs:
         with:
           workload_identity_provider: 'projects/284911242659/locations/global/workloadIdentityPools/gh-to-vm-pool/providers/gh-to-vm-provider'
           service_account: ' gh-actions-to-vm@mwenclubhouse.iam.gserviceaccount.com'
-
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
 
