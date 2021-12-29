@@ -43,7 +43,6 @@ jobs:
             --restart always \
             -p 3000:3000 \
             ghcr.io/purdue-ecess/ecess-api:main"
-          pwd
-          ls /home/runner/
           ls /home/runner/.ssh
-          gcloud compute os-login ssh-keys remove --key-file=~/.ssh/google_compute_engine.pub
+          cat /home/runner/.ssh/google_compute_engine.pub
+          gcloud compute os-login ssh-keys remove --key-file=/home/runner/.ssh/google_compute_engine.pub
