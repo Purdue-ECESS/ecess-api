@@ -7,7 +7,7 @@ name: Create and publish a Docker image
 
 on:
   push:
-    branches: ['prod', 'matthewwen-patch-1']
+    branches: ['prod']
 
 env:
   REGISTRY: ghcr.io
@@ -30,7 +30,7 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
 
-      - name: 'Use gcloud CLI'
+      - name: 'Use GCP CLI'
         run: |
           gcloud compute ssh mwenclubhouse --zone us-central1-a --command "\
           sudo docker system prune -f -a ; \
