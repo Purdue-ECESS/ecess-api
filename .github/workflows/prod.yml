@@ -32,7 +32,7 @@ jobs:
 
       - name: 'Use gcloud CLI'
         run: |
-          gcloud compute ssh mwenclubhouse@mwenclubhouse --zone us-central1-a --command "\
+          gcloud compute ssh mwenclubhouse --zone us-central1-a --command "\
           sudo docker system prune -f -a ; \
           sudo docker pull ghcr.io/purdue-ecess/ecess-api:ecess ; \
           sudo docker stop ecess ; \
