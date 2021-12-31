@@ -13,16 +13,24 @@ import cors from "cors";
 
 Api.setUse(cors({
     origin: (origin, callback) => {
-        console.log(origin);
-        if (origin === undefined) {
-            callback(Error("Origin is Undefined"), origin);
+        if (origin === undefined && process.env.ENV !== undefined) {
+            callback({
+                name: "Origin is Undefined",
+                message: "Origin Used is Not Defined",
+                stack: "Origin Used is Not Defined",
+            }, origin);
         }
-        else if (origin.startsWith("https://www.purdue.ecess.org")) {
+        else if (process.env.ENV === undefined ||
+                origin !== undefined && origin.startsWith("https://www.purdue.ecess.org")) {
             callback(null, origin);
         }
         else {
-            console.log(origin);
-            callback(Error("Origins is Unknown"), origin);
+            console.log({origin});
+            callback({
+                name: "Origin is Unknown",
+                message: "Origin Used is Not Known",
+                stack: "Origin Used is Not Known",
+            }, origin);
         }
     },
     optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
@@ -31,6 +39,7 @@ Api.setUse(express.json());
 
 
 Api.setGetRoute("/", (req: any, res: any) => {
+    console.log("better not be here");
     res.send({
         status: process.env.ENV || 'development',
         purpose: 'ECE Student Society',
