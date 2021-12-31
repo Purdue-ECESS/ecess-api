@@ -39,7 +39,6 @@ Api.setUse(express.json());
 
 
 Api.setGetRoute("/", (req: any, res: any) => {
-    console.log("better not be here");
     res.send({
         status: process.env.ENV || 'development',
         purpose: 'ECE Student Society',
