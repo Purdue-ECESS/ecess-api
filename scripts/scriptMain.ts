@@ -31,14 +31,19 @@ async function listImages() {
     console.log(response);
 }
 
-async function loginExample() {
+async function getUserByToken() {
+    const token = "";
+    const temp: MyFbAuth = MyFbAuth.default;
+    await temp.getUserByToken(token);
+}
+
+async function signUpExample() {
     const email = "mattwen2018@gmail.com";
     const pwd = "purdue";
-    const temp: MyFbAuth = MyFbAuth.default;
-    temp.loginWithEmailAndPwd(email, pwd);
+    await MyFbAuth.default.createWithEmailAndPwd(email, pwd);
 }
 
 // My hack to keep the process alive:
-loginExample().then(() => {
+signUpExample().then(() => {
     console.log("Main")
 });
