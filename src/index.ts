@@ -9,14 +9,24 @@ import {MyFbStorage} from "./google/myFb/myFbStorage";
 import fs from "fs";
 import cron from "node-cron";
 import {Drive} from "./google/drive";
+import cors from "cors";
 
-
-Api.setUse(
-    (req: any, res: any, next: any) => {
-        res.header("Access-Control-Allow-Origin", "*");
-        return next();
-    }
-)
+Api.setUse(cors({
+    origin: (origin, callback) => {
+        console.log(origin);
+        if (origin === undefined) {
+            callback(Error("Origin is Undefined"), origin);
+        }
+        else if (origin.startsWith("https://www.purdue.ecess.org")) {
+            callback(null, origin);
+        }
+        else {
+            console.log(origin);
+            callback(Error("Origins is Unknown"), origin);
+        }
+    },
+    optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+}))
 Api.setUse(express.json());
 
 
