@@ -24,7 +24,6 @@ function checkOrigin(origin: string): boolean {
     const regex = /https:\/\/purdue-ecess--pr[0-9]*-([a-z]|[A-Z]|-|[0-9])*.web.app/
     return regex.test(origin);
 }
-checkOrigin("temp");
 
 Api.setUse(cors({
     origin: (origin, callback) => {
