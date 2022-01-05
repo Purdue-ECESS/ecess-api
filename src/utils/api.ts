@@ -1,5 +1,6 @@
 import expressWs, {Application} from "express-ws";
 import express from "express";
+import cors from "cors";
 
 export class Api {
     static default: Api = new Api();
@@ -10,7 +11,7 @@ export class Api {
         this.ws = expressWs(express());
     }
 
-    get app(): any {
+    get app(): expressWs.Application {
         return this.ws.app;
     }
 
