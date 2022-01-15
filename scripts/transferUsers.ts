@@ -81,5 +81,11 @@ const deleteUsers = async () => {
     }
 }
 
+const changePassword = async () => {
+    const user = await auth.getUserByEmail("shhh@purdue.edu");
+    await auth.updateUser(user.uid, {password: "shhhh"});
+}
+
 // deleteUsers().then();
-main().then();
+// main().then();
+changePassword().then();
