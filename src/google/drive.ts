@@ -132,7 +132,7 @@ export class Drive extends GoogleApi {
                 else {
                     files.push({
                         ...item,
-                        name: key.substr(1)
+                        name: key.substring(1)
                     });
                 }
             }

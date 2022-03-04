@@ -27,7 +27,7 @@ export function requestUser() {
         }
     });
 
-    Api.setGetRoute("/drive/transform", async function (req: Request, res: Response) {
+    Api.setPostRoute("/drive/transform", async function (req: Request, res: Response) {
         const user = await decodeIDToken(req);
         if (!user) {
             res.sendStatus(400);
@@ -37,7 +37,8 @@ export function requestUser() {
         if (!admin || !admin.admin) {
             res.sendStatus(400);
         }
-        await Drive.loadDrive().uploadDriveToFb();
+        const attribute = req.body;
+        await Drive.loadDrive().uploadDriveToFb(attribute.force || false);
         res.sendStatus(200);
     });
 
