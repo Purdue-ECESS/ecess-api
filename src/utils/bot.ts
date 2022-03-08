@@ -72,10 +72,7 @@ export class Bot {
             return [];
         }
         const response = [];
-        if (!process.env.AMBASSADOR_ANNOUNCEMENT_CHANNEL) {
-            return [];
-        }
-        const channel : Channel | null = await Bot.client.channels.fetch(process.env.AMBASSADOR_ANNOUNCEMENT_CHANNEL || "");
+        const channel : Channel | null = await Bot.client.channels.fetch("818548114251972629");
         if (!this.guild) {
             return [];
         }
@@ -91,7 +88,7 @@ export class Bot {
                 author: name.displayName,
                 content: await this.HTMLParser(m.content),
                 date: m.editedAt || m.createdAt,
-                label: -1 != ["Giselle", "Leigh Ann"].indexOf(name.displayName) ? "Advisor": (name.displayName === "Sara Hui" ? "Head Ambassador": "Ambassador")
+                label: -1 != ["Giselle", "Leigh Ann"].indexOf(name.displayName) ? "Advisor": (["Sara Hui", "Gabby Whitis"].indexOf(name.displayName) != -1 ? "Lord Ambassador": "Ambassador")
             });
         }
         return response;
