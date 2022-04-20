@@ -21,7 +21,7 @@ export class Bot {
     static ecess: Bot = new Bot(process.env.ECESS_GUILD_ID,
         {
         "ambassadors": {
-            "General": "901194834243633192",
+            "General": "936445669995057243",
             "T2M": "936445460980322305"
             }
         });
