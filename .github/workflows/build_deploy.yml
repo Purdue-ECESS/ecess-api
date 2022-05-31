@@ -7,7 +7,7 @@ name: Create, Publish Docker Image. Deploy to GCP.
 
 on:
   push:
-    branches: ['main']
+    branches: ['main', 'disconnect']
 
 env:
   REGISTRY: ghcr.io
@@ -54,7 +54,7 @@ jobs:
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
 
-      - name: 'Use GCP CLI'
+      - name: 'This should fail'
         run: |
           gcloud compute ssh mwenclubhouse --zone us-central1-a --command "\
           sudo docker system prune -f -a ; \
